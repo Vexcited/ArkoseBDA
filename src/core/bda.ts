@@ -1,5 +1,3 @@
-import fs from "node:fs/promises";
-
 import { base64 } from "@scure/base";
 import { cbc } from '@noble/ciphers/aes';
 import { md5 } from "@noble/hashes/legacy";
@@ -54,21 +52,21 @@ export class ArkoseBDA {
   }
 }
 
-void async function main () {
-  const http_response = await fs.readFile("http", "utf8");
-  const body = http_response.split("\r\n\r\n").at(-1)!;
-  const form = new URLSearchParams(body);
+// void async function main () {
+//   const http_response = await fs.readFile("http", "utf8");
+//   const body = http_response.split("\r\n\r\n").at(-1)!;
+//   const form = new URLSearchParams(body);
 
-  const arkose = new ArkoseBDA(form.get("userbrowser")!);
-  const encrypted_bda = arkose.decode(form.get("bda")!);
-  const decrypted_bda = arkose.decrypt(encrypted_bda);
+//   const arkose = new ArkoseBDA(form.get("userbrowser")!);
+//   const encrypted_bda = arkose.decode(form.get("bda")!);
+//   const decrypted_bda = arkose.decrypt(encrypted_bda);
 
-  console.log(JSON.stringify(decrypted_bda, null, 2));
+//   console.log(JSON.stringify(decrypted_bda, null, 2));
 
-  // const { value } = decrypted_bda.find(entry => entry.key === "enhanced_fp")!;
-  // const fingerprint = (value as Array<BDAEntry>).reduce((acc, entry) => {
-  //   acc[entry.key as string] = entry.value;
-  //   return acc;
-  // }, {} as Record<string, any>)
-  // console.log(JSON.stringify(fingerprint, null, 2));
-}();
+//   // const { value } = decrypted_bda.find(entry => entry.key === "enhanced_fp")!;
+//   // const fingerprint = (value as Array<BDAEntry>).reduce((acc, entry) => {
+//   //   acc[entry.key as string] = entry.value;
+//   //   return acc;
+//   // }, {} as Record<string, any>)
+//   // console.log(JSON.stringify(fingerprint, null, 2));
+// }();
