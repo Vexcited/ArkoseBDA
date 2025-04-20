@@ -30,6 +30,9 @@ importers:
       unocss:
         specifier: 66.1.0-beta.11
         version: 66.1.0-beta.11(postcss@8.5.3)(vite@6.2.6(jiti@2.4.2))(vue@3.5.13(typescript@5.8.3))
+      unocss-catppuccin:
+        specifier: ^2.0.1
+        version: 2.0.1(unocss@66.1.0-beta.11(postcss@8.5.3)(vite@6.2.6(jiti@2.4.2))(vue@3.5.13(typescript@5.8.3)))
       vite:
         specifier: ^6.2.6
         version: 6.2.6(jiti@2.4.2)
@@ -125,6 +128,9 @@ packages:
   '@babel/types@7.27.0':
     resolution: {integrity: sha512-H45s8fVLYjbhFH62dIJ3WtmJ6RSPt/3DRO0ZcT2SUiYiQyz3BLVb9ADEnLl91m74aQPS3AzzeajZHYOalWe3bg==}
     engines: {node: '>=6.9.0'}
+
+  '@catppuccin/palette@1.7.1':
+    resolution: {integrity: sha512-aRc1tbzrevOTV7nFTT9SRdF26w/MIwT4Jwt4fDMc9itRZUDXCuEDBLyz4TQMlqO9ZP8mf5Hu4Jr6D03NLFc6Gw==}
 
   '@esbuild/aix-ppc64@0.25.2':
     resolution: {integrity: sha512-wCIboOL2yXZym2cgm6mlA742s9QeJ8DjGVaL39dLN4rRwrOgOyYSnOaFPhKZGLb2ngj4EyfAFjsNJwPXZvseag==}
@@ -880,6 +886,18 @@ packages:
   unconfig@7.3.1:
     resolution: {integrity: sha512-LH5WL+un92tGAzWS87k7LkAfwpMdm7V0IXG2FxEjZz/QxiIW5J5LkcrKQThj0aRz6+h/lFmKI9EUXmK/T0bcrw==}
 
+  unocss-catppuccin@2.0.1:
+    resolution: {integrity: sha512-TaDYDrI4yXQ5mpkbSuk1CEhGtd5JssgYEDqkoCziWEqTsqGgGSyue0oT86l3FQzwo//g9bgK91hIILKFjWTd7A==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      '@unocss/core': '>=0.51.0'
+      unocss: '>=0.51.0'
+    peerDependenciesMeta:
+      '@unocss/core':
+        optional: true
+      unocss:
+        optional: true
+
   unocss@66.1.0-beta.11:
     resolution: {integrity: sha512-XdqHupFY4kD7icF9xPmK8uKpRdi/EZV9ZrM1W1J4TwoQtmw7daDjs9greqawJXayxHGf2Baevw4ht++dJ2R4jA==}
     engines: {node: '>=14'}
@@ -1101,6 +1119,8 @@ snapshots:
     dependencies:
       '@babel/helper-string-parser': 7.25.9
       '@babel/helper-validator-identifier': 7.25.9
+
+  '@catppuccin/palette@1.7.1': {}
 
   '@esbuild/aix-ppc64@0.25.2':
     optional: true
@@ -1844,6 +1864,12 @@ snapshots:
       defu: 6.1.4
       jiti: 2.4.2
       quansync: 0.2.10
+
+  unocss-catppuccin@2.0.1(unocss@66.1.0-beta.11(postcss@8.5.3)(vite@6.2.6(jiti@2.4.2))(vue@3.5.13(typescript@5.8.3))):
+    dependencies:
+      '@catppuccin/palette': 1.7.1
+    optionalDependencies:
+      unocss: 66.1.0-beta.11(postcss@8.5.3)(vite@6.2.6(jiti@2.4.2))(vue@3.5.13(typescript@5.8.3))
 
   unocss@66.1.0-beta.11(postcss@8.5.3)(vite@6.2.6(jiti@2.4.2))(vue@3.5.13(typescript@5.8.3)):
     dependencies:
