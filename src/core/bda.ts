@@ -82,18 +82,26 @@ export class ArkoseBDA {
   public static toObjectProperties (value: Array<BDAEntry>) {
     type EntryValueProperty = BDAEntryValue | Record<string, BDAEntryValue>;
 
+    if (Array.isArray(value)) {
+      // we can't check if the value is an array of BDAEntry
+      // when the array is empty...
+      if (value.length === 0) {
+        return value;
+      }
+
+      // we should check if the value is an array of BDAEntry
+      if (!value.every(item => typeof item === "object" && "key" in item && "value" in item)) {
+        return value;
+      }
+    }
+
     return value.reduce((acc, entry) => {
-
-      if (Array.isArray(entry.value)
-        // we should check if the value is an array of BDAEntry
-        && entry.value.every(item => typeof item === "object" && "key" in item && "value" in item)
-      ) {
-        acc[entry.key] = this.toObjectProperties(entry.value as Array<BDAEntry>) as Record<string, BDAEntryValue>;
-      }
-      else {
-        acc[entry.key] = entry.value as BDAEntryValue;
+      if (Array.isArray(entry.value)) {
+        acc[entry.key] = this.toObjectProperties(entry.value as Array<BDAEntry>) as Record<string, BDAEntryValue>
+        return acc;
       }
 
+      acc[entry.key] = entry.value;
       return acc;
     }, {} as Record<string, EntryValueProperty>)
   }
