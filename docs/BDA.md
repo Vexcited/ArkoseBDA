@@ -3,6 +3,16 @@
 A cute documentation for properties contained in the BDA, with a focus
 on how to reproduce them in your browser with JS.
 
+## `enhanced_fp`
+
+### `screen_orientation`
+
+```javascript
+const screen_orientation = screen && screen.orientation && screen.orientation.type
+  ? screen.orientation.type
+  : null
+```
+
 ## `fe`
 
 ### `DNT` (do not track)
@@ -211,6 +221,8 @@ function getCFP () {
     return false;
   }
 }
+
+const CFP = getCFP();
 ```
 
 ### `FR`
@@ -225,6 +237,8 @@ function getFR () {
 
   return maxScreen < maxAvailScreen || minScreen < minAvailScreen;
 }
+
+const FR = getFR();
 ```
 
 ### `FOS`
