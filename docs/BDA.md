@@ -1,9 +1,191 @@
 # BDA
 
-A cute documentation for properties contained in the BDA, with a focus
-on how to reproduce them in your browser with JS.
+> Will be moved to GitHub wiki pages in the future.
 
-## `enhanced_fp`
+A documentation for properties contained in the BDA, with a focus
+on how to reproduce them in your browser with JS. Knowing these
+make easier for anyone to potentially reproduce the BDA
+or tweaking global properties to get an expected BDA.
+
+First, here's the utility functions we'll use throughout the documentation.
+
+```javascript
+import { md5 } from "@noble/hashes/legacy";
+import { bytesToHex } from "@noble/hashes/utils";
+
+/**
+ * Converts a UTF-8 string into an MD5 HEX.
+ *
+ * @example
+ * utf8ToMd5Hex("helloworld"); // "fc5e038d38a57032085441e7fe7010b0"
+ */
+const utf8ToMd5Hex = (input) => bytesToHex(md5(input));
+
+/**
+ * Removes query parameters from a string, typically a URL.
+ *
+ * @example
+ * removeQueryParams("https://example.com/path?query=param"); // "https://example.com/path"
+ */
+const removeQueryParams = (input) => {
+  return (input || typeof input === "string") ? input.split("?")[0] : null;
+};
+
+/**
+ * Returns a number if the input is a number, otherwise returns null.
+ *
+ * @example
+ * numberOrNull(42); // 42
+ * numberOrNull("not a number"); // null
+ */
+const numberOrNull = (num) => {
+  return typeof num === "number" ? num : null;
+};
+```
+
+## `enhanced_fp` (enhanced fingerprint)
+
+### `user_agent_data_brands`
+
+```javascript
+const user_agent_data_brands = navigator.userAgentData && navigator.userAgentData.brands
+  ? navigator.userAgentData.brands.map((ua) => ua.brand).join(",")
+  : null;
+```
+
+### `user_agent_data_mobile`
+
+```javascript
+const user_agent_data_mobile = navigator.userAgentData
+  ? navigator.userAgentData.mobile === undefined
+    ? null
+    : navigator.userAgentData.mobile
+  : null;
+```
+
+### `navigator_connection_downlink`
+
+```javascript
+const navigator_connection_downlink = navigator.connection && navigator.connection.downlink;
+```
+
+### `navigator_connection_downlink_max`
+
+```javascript
+const navigator_connection_downlink_max = navigator.connection && navigator.connection.downlinkMax
+  ? typeof navigator.connection.downlinkMax === "number" && navigator.connection.downlinkMax !== Infinity
+    ? navigator.connection.downlinkMax
+    : -1
+  : null;
+```
+
+### `network_info_rtt`
+
+```javascript
+const network_info_rtt = (navigator.connection && navigator.connection.rtt) || null;
+```
+
+### `network_info_save_data`
+
+```javascript
+const network_info_save_data = navigator.connection
+  ? navigator.connection.saveData === undefined
+    ? null
+    : navigator.connection.saveData
+  : null;
+```
+
+### `screen_pixel_depth`
+
+```javascript
+const screen_pixel_depth = numberOrNull(screen.pixelDepth);
+```
+
+### `navigator_device_memory`
+
+```javascript
+const navigator_device_memory = numberOrNull(navigator.deviceMemory);
+```
+
+### `window__tree_structure`
+
+```javascript
+const window__tree_structure = (() => {
+  let structure = "";
+
+  try {
+    const recursiveWindow = (win = top) => {
+      const windows = [];
+
+      for (let i = 0; i < win.length; i++)
+        windows.push(recursiveWindow(win[i]));
+
+      return windows;
+    }
+
+    structure = JSON.stringify(recursiveWindow());
+  } catch {}
+
+  return structure;
+})();
+```
+
+### `window__location_href`
+
+```javascript
+const window__location_href = window.location && window.location.href
+  ? removeQueryParams(window.location.href).split("#")[0]
+  : null;
+```
+
+### `math_fingerprint`
+
+```javascript
+const math_fingerprint = (() => {
+  const callOrNaN = (fn, ...args) => {
+    if (typeof fn === "function") {
+      return fn(...args);
+    }
+    return NaN;
+  };
+
+  const values = [
+    callOrNaN(Math.acos, 0.123),
+    callOrNaN(Math.acosh, Math.SQRT2),
+    callOrNaN(Math.atan, 2),
+    callOrNaN(Math.atanh, 0.5),
+    callOrNaN(Math.cbrt, Math.PI),
+    callOrNaN(Math.cos, 21 * Math.LN2),
+    callOrNaN(Math.cos, 21 * Math.SQRT1_2),
+    callOrNaN(Math.cosh, 492 * Math.LOG2E),
+    callOrNaN(Math.expm1, 1),
+    callOrNaN(Math.hypot, Math.LOG2E, -100),
+    callOrNaN(Math.log10, 7 * Math.LOG10E),
+    callOrNaN(Math.pow, Math.PI, -100),
+    callOrNaN(Math.pow, 0.002, -100),
+    callOrNaN(Math.sin, Math.PI),
+    callOrNaN(Math.sin, 39 * Math.E),
+    callOrNaN(Math.sinh, Math.PI),
+    callOrNaN(Math.sinh, 492 * Math.LOG2E),
+    callOrNaN(Math.tan, 10 * Math.LOG2E),
+    callOrNaN(Math.tanh, 0.123),
+  ].map((t) => t.toString());
+
+  return utf8ToMd5Hex(values.join(","));
+})();
+```
+
+### `supported_math_functions`
+
+```javascript
+const supported_math_functions = (() => {
+  const functions = Object.getOwnPropertyNames(Math).filter(
+    (property) => typeof Math[property] === "function"
+  );
+
+  return utf8ToMd5Hex(functions.join(","));
+})();
+```
 
 ### `screen_orientation`
 
@@ -144,7 +326,7 @@ const PK = navigator.platform ? navigator.platform : "unknown";
 ### `CFP` (canvas fingerprint)
 
 ```javascript
-function getCFP () {
+const CFP = (() => {
   const canvas = document.createElement("canvas");
 
   if (!canvas.getContext) {
@@ -220,15 +402,13 @@ function getCFP () {
   catch {
     return false;
   }
-}
-
-const CFP = getCFP();
+})();
 ```
 
 ### `FR`
 
 ```javascript
-function getFR () {
+const FR = (() => {
   const maxScreen = Math.max(screen.width, screen.height);
   const minScreen = Math.min(screen.width, screen.height);
 
@@ -236,9 +416,7 @@ function getFR () {
   const minAvailScreen = Math.min(screen.availWidth, screen.availHeight);
 
   return maxScreen < maxAvailScreen || minScreen < minAvailScreen;
-}
-
-const FR = getFR();
+})();
 ```
 
 ### `FOS`
