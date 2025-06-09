@@ -107,6 +107,244 @@ const screen_pixel_depth = numberOrNull(screen.pixelDepth);
 const navigator_device_memory = numberOrNull(navigator.deviceMemory);
 ```
 
+### `navigator_pdf_viewer_enabled`
+
+```javascript
+const navigator_pdf_viewer_enabled = navigator.pdfViewerEnabled === undefined
+  ? null
+  : navigator.pdfViewerEnabled;
+```
+
+### `navigator_languages`
+
+```javascript
+const navigator_languages = navigator.languages && typeof navigator.languages.join == "function"
+  ? navigator.languages.join(",")
+  : null;
+```
+
+### `window_inner_width`
+
+```javascript
+const window_inner_width = numberOrNull(window.innerWidth);
+```
+
+### `window_inner_height`
+
+```javascript
+const window_inner_height = numberOrNull(window.innerHeight);
+```
+
+### `window_outer_width`
+
+```javascript
+const window_outer_width = numberOrNull(window.outerWidth);
+```
+
+### `window_outer_height`
+
+```javascript
+const window_outer_height = numberOrNull(window.outerHeight);
+```
+
+### `browser_detection_firefox`
+
+```javascript
+const browser_detection_firefox = navigator.userAgent
+  ? navigator.userAgent.indexOf("Firefox") > 0
+  : null;
+```
+
+### `browser_detection_brave`
+
+```javascript
+const browser_detection_brave = !!navigator.brave;
+```
+
+### `browser_api_checks`
+
+```javascript
+const browser_api_checks = (() => {
+  try {
+    return [
+      "permission_status: ".concat(
+        !!window.PermissionStatus &&
+          Object.prototype.hasOwnProperty.call(
+            window.PermissionStatus.prototype,
+            "name"
+          )
+      ),
+      "eye_dropper: ".concat(!!window.EyeDropper),
+      "audio_data: ".concat(!!window.AudioData),
+      "writable_stream: ".concat(
+        !!window.WritableStreamDefaultController
+      ),
+      "css_style_rule: ".concat(
+        !!window.CSSCounterStyleRule
+      ),
+      "navigator_ua: ".concat(
+        !!window.NavigatorUAData
+      ),
+      "barcode_detector: ".concat(
+        !!window.BarcodeDetector
+      ),
+      "display_names: ".concat(
+        !(
+          !window.Intl ||
+          !window.Intl.DisplayNames
+        )
+      ),
+      "contacts_manager: ".concat(
+        !!(
+          navigator &&
+          navigator.contacts &&
+          navigator.ContactsManager
+        )
+      ),
+      "svg_discard_element: ".concat(
+        !!window.SVGDiscardElement
+      ),
+      "usb: ".concat(
+        navigator.usb ? "defined" : "NA"
+      ),
+      "media_device: ".concat(
+        navigator.mediaDevices ? "defined" : "NA"
+      ),
+      "playback_quality: ".concat(
+        !!(
+          window.HTMLVideoElement &&
+          window.HTMLVideoElement.prototype &&
+          window.HTMLVideoElement.prototype.getVideoPlaybackQuality
+        )
+      )
+    ];
+  }
+  catch {
+    return null;
+  }
+})();
+```
+
+### `browser_object_checks`
+
+```javascript
+// TODO
+```
+
+### `29s83ih9` (not sure if constant)
+
+```javascript
+const 29s83ih9 = (() => {
+  // TODO
+})();
+```
+
+### `audio_codecs`
+
+```javascript
+const audio_codecs = (() => {
+  const audio = document.createElement("audio");
+  let codecs = null;
+
+  if (audio.canPlayType) {
+    codecs = JSON.stringify({
+      ogg: audio.canPlayType('audio/ogg; codecs="vorbis"'),
+      mp3: audio.canPlayType('audio/mpeg;'),
+      wav: audio.canPlayType('audio/wav; codecs="1"'),
+      m4a: audio.canPlayType("audio/x-m4a;"),
+      aac: audio.canPlayType("audio/aac;"),
+    });
+  }
+
+  return codecs;
+})();
+```
+
+### `audio_codecs_extended_hash`
+
+```javascript
+const audio_codecs_extended_hash = (() => {
+  const AUDIO_EXTRA_CODECS = [
+    "audio/mp4; codecs=\"mp4a.40\"",
+    "audio/mp4; codecs=\"mp4a.40.1\"",
+    "audio/mp4; codecs=\"mp4a.40.2\"",
+    "audio/mp4; codecs=\"mp4a.40.3\"",
+    "audio/mp4; codecs=\"mp4a.40.4\"",
+    "audio/mp4; codecs=\"mp4a.40.5\"",
+    "audio/mp4; codecs=\"mp4a.40.6\"",
+    "audio/mp4; codecs=\"mp4a.40.7\"",
+    "audio/mp4; codecs=\"mp4a.40.8\"",
+    "audio/mp4; codecs=\"mp4a.40.9\"",
+    "audio/mp4; codecs=\"mp4a.40.12\"",
+    "audio/mp4; codecs=\"mp4a.40.13\"",
+    "audio/mp4; codecs=\"mp4a.40.14\"",
+    "audio/mp4; codecs=\"mp4a.40.15\"",
+    "audio/mp4; codecs=\"mp4a.40.16\"",
+    "audio/mp4; codecs=\"mp4a.40.17\"",
+    "audio/mp4; codecs=\"mp4a.40.19\"",
+    "audio/mp4; codecs=\"mp4a.40.20\"",
+    "audio/mp4; codecs=\"mp4a.40.21\"",
+    "audio/mp4; codecs=\"mp4a.40.22\"",
+    "audio/mp4; codecs=\"mp4a.40.23\"",
+    "audio/mp4; codecs=\"mp4a.40.24\"",
+    "audio/mp4; codecs=\"mp4a.40.25\"",
+    "audio/mp4; codecs=\"mp4a.40.26\"",
+    "audio/mp4; codecs=\"mp4a.40.27\"",
+    "audio/mp4; codecs=\"mp4a.40.28\"",
+    "audio/mp4; codecs=\"mp4a.40.29\"",
+    "audio/mp4; codecs=\"mp4a.40.32\"",
+    "audio/mp4; codecs=\"mp4a.40.33\"",
+    "audio/mp4; codecs=\"mp4a.40.34\"",
+    "audio/mp4; codecs=\"mp4a.40.35\"",
+    "audio/mp4; codecs=\"mp4a.40.36\"",
+    "audio/mp4; codecs=\"mp4a.66\"",
+    "audio/mp4; codecs=\"mp4a.67\"",
+    "audio/mp4; codecs=\"mp4a.68\"",
+    "audio/mp4; codecs=\"mp4a.69\"",
+    "audio/mp4; codecs=\"mp4a.6B\"",
+    "audio/mp4; codecs=\"mp3\"",
+    "audio/mp4; codecs=\"flac\"",
+    "audio/mp4; codecs=\"bogus\"",
+    "audio/mp4; codecs=\"aac\"",
+    "audio/mp4; codecs=\"ac3\"",
+    "audio/mp4; codecs=\"A52\"",
+    "audio/mpeg; codecs=\"mp3\"",
+    "audio/wav; codecs=\"0\"",
+    "audio/wav; codecs=\"2\"",
+    "audio/wave; codecs=\"0\"",
+    "audio/wave; codecs=\"1\"",
+    "audio/wave; codecs=\"2\"",
+    "audio/x-wav; codecs=\"0\"",
+    "audio/x-wav; codecs=\"1\"",
+    "audio/x-wav; codecs=\"2\"",
+    "audio/x-pn-wav; codecs=\"0\"",
+    "audio/x-pn-wav; codecs=\"1\"",
+    "audio/x-pn-wav; codecs=\"2\""
+  ];
+
+  const audio = document.createElement("audio");
+  const codecs = {};
+
+  AUDIO_EXTRA_CODECS.forEach((codec) => {
+    let canPlay = null;
+    let mediaSource = null;
+
+    if (audio.canPlayType)
+      canPlay = audio.canPlayType(codec);
+
+    if (window.MediaSource && window.MediaSource.isTypeSupported)
+      mediaSource = window.MediaSource.isTypeSupported(codec);
+
+    codecs[codec] = {
+      canPlay: canPlay,
+      mediaSource: mediaSource
+    };
+  });
+
+  return utf8ToMd5Hex(JSON.stringify(codecs));
+})();
+```
+
 ### `window__tree_structure`
 
 ```javascript
