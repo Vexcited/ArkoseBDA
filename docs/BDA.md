@@ -483,13 +483,14 @@ const S = screen.height > screen.width
 ### `AS` (available screen)
 
 ```javascript
-let AS;
+const AS = (() => {
+  if (screen.availWidth && screen.availHeight) {
+    return screen.availHeight > screen.availWidth
+      ? [screen.availHeight, screen.availWidth]
+      : [screen.availWidth, screen.availHeight];
+  }
+})();
 
-if (screen.availWidth && screen.availHeight) {
-  AS = screen.availHeight > screen.availWidth
-    ? [screen.availHeight, screen.availWidth]
-    : [screen.availWidth, screen.availHeight];
-}
 ```
 
 ### `TO` (timezone offset)
@@ -501,40 +502,40 @@ const TO = new Date().getTimezoneOffset();
 ### `SS` (session storage)
 
 ```javascript
-let SS;
-
-try {
-  SS = !!window.sessionStorage;
-}
-catch {
-  SS = true;
-}
+const SS = (() => {
+  try {
+    return !!window.sessionStorage;
+  }
+  catch {
+    return true;
+  }
+})();
 ```
 
 ### `LS` (local storage)
 
 ```javascript
-let LS;
-
-try {
-  LS = !!window.localStorage;
-}
-catch {
-  LS = true;
-}
+const LS = (() => {
+  try {
+    return !!window.localStorage;
+  }
+  catch {
+    return true;
+  }
+})();
 ```
 
 ### `IDB` (indexedDB)
 
 ```javascript
-let IDB;
-
-try {
-  IDB = !!window.indexedDB;
-}
-catch {
-  IDB = true;
-}
+const IDB = (() => {
+  try {
+    return !!window.indexedDB;
+  }
+  catch {
+    return true;
+  }
+})();
 ```
 
 ### `B` (behavior)
