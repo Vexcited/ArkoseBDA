@@ -28,7 +28,7 @@ const utf8ToMd5Hex = (input) => bytesToHex(md5(input));
  * removeQueryParams("https://example.com/path?query=param"); // "https://example.com/path"
  */
 const removeQueryParams = (input) => {
-  return (input || typeof input === "string") ? input.split("?")[0] : null;
+  return input || typeof input === "string" ? input.split("?")[0] : null;
 };
 
 /**
@@ -48,9 +48,10 @@ const numberOrNull = (num) => {
 ### `user_agent_data_brands`
 
 ```javascript
-const user_agent_data_brands = navigator.userAgentData && navigator.userAgentData.brands
-  ? navigator.userAgentData.brands.map((ua) => ua.brand).join(",")
-  : null;
+const user_agent_data_brands =
+  navigator.userAgentData && navigator.userAgentData.brands
+    ? navigator.userAgentData.brands.map((ua) => ua.brand).join(",")
+    : null;
 ```
 
 ### `user_agent_data_mobile`
@@ -66,23 +67,27 @@ const user_agent_data_mobile = navigator.userAgentData
 ### `navigator_connection_downlink`
 
 ```javascript
-const navigator_connection_downlink = navigator.connection && navigator.connection.downlink;
+const navigator_connection_downlink =
+  navigator.connection && navigator.connection.downlink;
 ```
 
 ### `navigator_connection_downlink_max`
 
 ```javascript
-const navigator_connection_downlink_max = navigator.connection && navigator.connection.downlinkMax
-  ? typeof navigator.connection.downlinkMax === "number" && navigator.connection.downlinkMax !== Infinity
-    ? navigator.connection.downlinkMax
-    : -1
-  : null;
+const navigator_connection_downlink_max =
+  navigator.connection && navigator.connection.downlinkMax
+    ? typeof navigator.connection.downlinkMax === "number" &&
+      navigator.connection.downlinkMax !== Infinity
+      ? navigator.connection.downlinkMax
+      : -1
+    : null;
 ```
 
 ### `network_info_rtt`
 
 ```javascript
-const network_info_rtt = (navigator.connection && navigator.connection.rtt) || null;
+const network_info_rtt =
+  (navigator.connection && navigator.connection.rtt) || null;
 ```
 
 ### `network_info_save_data`
@@ -110,17 +115,17 @@ const navigator_device_memory = numberOrNull(navigator.deviceMemory);
 ### `navigator_pdf_viewer_enabled`
 
 ```javascript
-const navigator_pdf_viewer_enabled = navigator.pdfViewerEnabled === undefined
-  ? null
-  : navigator.pdfViewerEnabled;
+const navigator_pdf_viewer_enabled =
+  navigator.pdfViewerEnabled === undefined ? null : navigator.pdfViewerEnabled;
 ```
 
 ### `navigator_languages`
 
 ```javascript
-const navigator_languages = navigator.languages && typeof navigator.languages.join == "function"
-  ? navigator.languages.join(",")
-  : null;
+const navigator_languages =
+  navigator.languages && typeof navigator.languages.join == "function"
+    ? navigator.languages.join(",")
+    : null;
 ```
 
 ### `window_inner_width`
@@ -176,50 +181,26 @@ const browser_api_checks = (() => {
       ),
       "eye_dropper: ".concat(!!window.EyeDropper),
       "audio_data: ".concat(!!window.AudioData),
-      "writable_stream: ".concat(
-        !!window.WritableStreamDefaultController
-      ),
-      "css_style_rule: ".concat(
-        !!window.CSSCounterStyleRule
-      ),
-      "navigator_ua: ".concat(
-        !!window.NavigatorUAData
-      ),
-      "barcode_detector: ".concat(
-        !!window.BarcodeDetector
-      ),
-      "display_names: ".concat(
-        !(
-          !window.Intl ||
-          !window.Intl.DisplayNames
-        )
-      ),
+      "writable_stream: ".concat(!!window.WritableStreamDefaultController),
+      "css_style_rule: ".concat(!!window.CSSCounterStyleRule),
+      "navigator_ua: ".concat(!!window.NavigatorUAData),
+      "barcode_detector: ".concat(!!window.BarcodeDetector),
+      "display_names: ".concat(!(!window.Intl || !window.Intl.DisplayNames)),
       "contacts_manager: ".concat(
-        !!(
-          navigator &&
-          navigator.contacts &&
-          navigator.ContactsManager
-        )
+        !!(navigator && navigator.contacts && navigator.ContactsManager)
       ),
-      "svg_discard_element: ".concat(
-        !!window.SVGDiscardElement
-      ),
-      "usb: ".concat(
-        navigator.usb ? "defined" : "NA"
-      ),
-      "media_device: ".concat(
-        navigator.mediaDevices ? "defined" : "NA"
-      ),
+      "svg_discard_element: ".concat(!!window.SVGDiscardElement),
+      "usb: ".concat(navigator.usb ? "defined" : "NA"),
+      "media_device: ".concat(navigator.mediaDevices ? "defined" : "NA"),
       "playback_quality: ".concat(
         !!(
           window.HTMLVideoElement &&
           window.HTMLVideoElement.prototype &&
           window.HTMLVideoElement.prototype.getVideoPlaybackQuality
         )
-      )
+      ),
     ];
-  }
-  catch {
+  } catch {
     return null;
   }
 })();
@@ -249,7 +230,7 @@ const audio_codecs = (() => {
   if (audio.canPlayType) {
     codecs = JSON.stringify({
       ogg: audio.canPlayType('audio/ogg; codecs="vorbis"'),
-      mp3: audio.canPlayType('audio/mpeg;'),
+      mp3: audio.canPlayType("audio/mpeg;"),
       wav: audio.canPlayType('audio/wav; codecs="1"'),
       m4a: audio.canPlayType("audio/x-m4a;"),
       aac: audio.canPlayType("audio/aac;"),
@@ -265,61 +246,61 @@ const audio_codecs = (() => {
 ```javascript
 const audio_codecs_extended_hash = (() => {
   const AUDIO_EXTRA_CODECS = [
-    "audio/mp4; codecs=\"mp4a.40\"",
-    "audio/mp4; codecs=\"mp4a.40.1\"",
-    "audio/mp4; codecs=\"mp4a.40.2\"",
-    "audio/mp4; codecs=\"mp4a.40.3\"",
-    "audio/mp4; codecs=\"mp4a.40.4\"",
-    "audio/mp4; codecs=\"mp4a.40.5\"",
-    "audio/mp4; codecs=\"mp4a.40.6\"",
-    "audio/mp4; codecs=\"mp4a.40.7\"",
-    "audio/mp4; codecs=\"mp4a.40.8\"",
-    "audio/mp4; codecs=\"mp4a.40.9\"",
-    "audio/mp4; codecs=\"mp4a.40.12\"",
-    "audio/mp4; codecs=\"mp4a.40.13\"",
-    "audio/mp4; codecs=\"mp4a.40.14\"",
-    "audio/mp4; codecs=\"mp4a.40.15\"",
-    "audio/mp4; codecs=\"mp4a.40.16\"",
-    "audio/mp4; codecs=\"mp4a.40.17\"",
-    "audio/mp4; codecs=\"mp4a.40.19\"",
-    "audio/mp4; codecs=\"mp4a.40.20\"",
-    "audio/mp4; codecs=\"mp4a.40.21\"",
-    "audio/mp4; codecs=\"mp4a.40.22\"",
-    "audio/mp4; codecs=\"mp4a.40.23\"",
-    "audio/mp4; codecs=\"mp4a.40.24\"",
-    "audio/mp4; codecs=\"mp4a.40.25\"",
-    "audio/mp4; codecs=\"mp4a.40.26\"",
-    "audio/mp4; codecs=\"mp4a.40.27\"",
-    "audio/mp4; codecs=\"mp4a.40.28\"",
-    "audio/mp4; codecs=\"mp4a.40.29\"",
-    "audio/mp4; codecs=\"mp4a.40.32\"",
-    "audio/mp4; codecs=\"mp4a.40.33\"",
-    "audio/mp4; codecs=\"mp4a.40.34\"",
-    "audio/mp4; codecs=\"mp4a.40.35\"",
-    "audio/mp4; codecs=\"mp4a.40.36\"",
-    "audio/mp4; codecs=\"mp4a.66\"",
-    "audio/mp4; codecs=\"mp4a.67\"",
-    "audio/mp4; codecs=\"mp4a.68\"",
-    "audio/mp4; codecs=\"mp4a.69\"",
-    "audio/mp4; codecs=\"mp4a.6B\"",
-    "audio/mp4; codecs=\"mp3\"",
-    "audio/mp4; codecs=\"flac\"",
-    "audio/mp4; codecs=\"bogus\"",
-    "audio/mp4; codecs=\"aac\"",
-    "audio/mp4; codecs=\"ac3\"",
-    "audio/mp4; codecs=\"A52\"",
-    "audio/mpeg; codecs=\"mp3\"",
-    "audio/wav; codecs=\"0\"",
-    "audio/wav; codecs=\"2\"",
-    "audio/wave; codecs=\"0\"",
-    "audio/wave; codecs=\"1\"",
-    "audio/wave; codecs=\"2\"",
-    "audio/x-wav; codecs=\"0\"",
-    "audio/x-wav; codecs=\"1\"",
-    "audio/x-wav; codecs=\"2\"",
-    "audio/x-pn-wav; codecs=\"0\"",
-    "audio/x-pn-wav; codecs=\"1\"",
-    "audio/x-pn-wav; codecs=\"2\""
+    'audio/mp4; codecs="mp4a.40"',
+    'audio/mp4; codecs="mp4a.40.1"',
+    'audio/mp4; codecs="mp4a.40.2"',
+    'audio/mp4; codecs="mp4a.40.3"',
+    'audio/mp4; codecs="mp4a.40.4"',
+    'audio/mp4; codecs="mp4a.40.5"',
+    'audio/mp4; codecs="mp4a.40.6"',
+    'audio/mp4; codecs="mp4a.40.7"',
+    'audio/mp4; codecs="mp4a.40.8"',
+    'audio/mp4; codecs="mp4a.40.9"',
+    'audio/mp4; codecs="mp4a.40.12"',
+    'audio/mp4; codecs="mp4a.40.13"',
+    'audio/mp4; codecs="mp4a.40.14"',
+    'audio/mp4; codecs="mp4a.40.15"',
+    'audio/mp4; codecs="mp4a.40.16"',
+    'audio/mp4; codecs="mp4a.40.17"',
+    'audio/mp4; codecs="mp4a.40.19"',
+    'audio/mp4; codecs="mp4a.40.20"',
+    'audio/mp4; codecs="mp4a.40.21"',
+    'audio/mp4; codecs="mp4a.40.22"',
+    'audio/mp4; codecs="mp4a.40.23"',
+    'audio/mp4; codecs="mp4a.40.24"',
+    'audio/mp4; codecs="mp4a.40.25"',
+    'audio/mp4; codecs="mp4a.40.26"',
+    'audio/mp4; codecs="mp4a.40.27"',
+    'audio/mp4; codecs="mp4a.40.28"',
+    'audio/mp4; codecs="mp4a.40.29"',
+    'audio/mp4; codecs="mp4a.40.32"',
+    'audio/mp4; codecs="mp4a.40.33"',
+    'audio/mp4; codecs="mp4a.40.34"',
+    'audio/mp4; codecs="mp4a.40.35"',
+    'audio/mp4; codecs="mp4a.40.36"',
+    'audio/mp4; codecs="mp4a.66"',
+    'audio/mp4; codecs="mp4a.67"',
+    'audio/mp4; codecs="mp4a.68"',
+    'audio/mp4; codecs="mp4a.69"',
+    'audio/mp4; codecs="mp4a.6B"',
+    'audio/mp4; codecs="mp3"',
+    'audio/mp4; codecs="flac"',
+    'audio/mp4; codecs="bogus"',
+    'audio/mp4; codecs="aac"',
+    'audio/mp4; codecs="ac3"',
+    'audio/mp4; codecs="A52"',
+    'audio/mpeg; codecs="mp3"',
+    'audio/wav; codecs="0"',
+    'audio/wav; codecs="2"',
+    'audio/wave; codecs="0"',
+    'audio/wave; codecs="1"',
+    'audio/wave; codecs="2"',
+    'audio/x-wav; codecs="0"',
+    'audio/x-wav; codecs="1"',
+    'audio/x-wav; codecs="2"',
+    'audio/x-pn-wav; codecs="0"',
+    'audio/x-pn-wav; codecs="1"',
+    'audio/x-pn-wav; codecs="2"',
   ];
 
   const audio = document.createElement("audio");
@@ -329,15 +310,14 @@ const audio_codecs_extended_hash = (() => {
     let canPlay = null;
     let mediaSource = null;
 
-    if (audio.canPlayType)
-      canPlay = audio.canPlayType(codec);
+    if (audio.canPlayType) canPlay = audio.canPlayType(codec);
 
     if (window.MediaSource && window.MediaSource.isTypeSupported)
       mediaSource = window.MediaSource.isTypeSupported(codec);
 
     codecs[codec] = {
       canPlay: canPlay,
-      mediaSource: mediaSource
+      mediaSource: mediaSource,
     };
   });
 
@@ -359,7 +339,7 @@ const window__tree_structure = (() => {
         windows.push(recursiveWindow(win[i]));
 
       return windows;
-    }
+    };
 
     structure = JSON.stringify(recursiveWindow());
   } catch {}
@@ -371,9 +351,10 @@ const window__tree_structure = (() => {
 ### `window__location_href`
 
 ```javascript
-const window__location_href = window.location && window.location.href
-  ? removeQueryParams(window.location.href).split("#")[0]
-  : null;
+const window__location_href =
+  window.location && window.location.href
+    ? removeQueryParams(window.location.href).split("#")[0]
+    : null;
 ```
 
 ### `math_fingerprint`
@@ -428,10 +409,151 @@ const supported_math_functions = (() => {
 ### `screen_orientation`
 
 ```javascript
-const screen_orientation = screen && screen.orientation && screen.orientation.type
-  ? screen.orientation.type
-  : null
+const screen_orientation =
+  screen && screen.orientation && screen.orientation.type
+    ? screen.orientation.type
+    : null;
 ```
+
+### `webgl_aliased_line_width_range`
+
+> - Android WebView: `"[1, 1]"`
+> - Edge2 WebView: `"[1, 1]"`
+> - iOS WebView: `"[1, 1]"`
+
+### `webgl_aliased_point_size_range`
+
+> - Android WebView: `"[1, 64]"`
+> - Edge2 WebView: `"[1, 1024]"`
+> - iOS WebView: `"[1, 511]"`
+
+### `webgl_antialiasing`
+
+```javascript
+const canvas = document.createElement("canvas");
+const ctx =
+  canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+ctx.getContextAttributes().antialias ? "yes" : "no";
+```
+
+### `webgl_bits`
+
+> - Android WebView: `"8,8,24,8,8,0"`
+> - Edge2 WebView: `"8,8,24,8,8,0"`
+> - iOS WebView: `"8,8,24,8,8,0"`
+
+### `webgl_extensions`
+
+```javascript
+const canvas = document.createElement("canvas");
+const ctx =
+  canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+ctx.getSupportedExtensions().join(";");
+```
+
+### `webgl_extensions_hash`
+
+> - Android WebView: `"7a00d2ce8edf5aea43edf062919369ca"`
+> - Edge2 WebView: `"7300c23f4e6fa34e534fc99c1b628588"`
+> - iOS WebView: `"a3d2f4b4d6542e64817d83b2ff58556a"`
+
+### `webgl_fsf_params`
+
+> - Android WebView: `"23,127,127,23,127,127,23,127,127"`
+> - Edge2 WebView: `"23,127,127,23,127,127,23,127,127"`
+> - iOS WebView: `"23,127,127,23,127,127,23,127,127"`
+
+### `webgl_fsi_params`
+
+> - Android WebView: `"0,31,30,0,31,30,0,31,30"`
+> - Edge2 WebView: `"0,31,30,0,31,30,0,31,30"`
+> - iOS WebView: `"0,31,30,0,31,30,0,31,30"`
+
+### `webgl_hash_webgl`
+
+> - Android WebView: `"a5d931936e4476c18fe01034cd340f52"`
+> - Edge2 WebView: `"e94d2c1266e6a9486d9e9b5c35356892"`
+> - iOS WebView: `"a65119d480ae8971bc1c0e9f2739a6a5"`
+
+### `webgl_max_params`
+
+> - Android WebView: `",80,4096,1024,16384,16,4096,31,16,16,1024"`
+> - Edge2 WebView: `"16,32,16384,1024,16384,16,16384,30,16,16,4095"`
+> - iOS WebView: `"16,32,16384,1024,16384,16,16384,31,16,16,1024"`
+
+### `webgl_max_viewport_dims`
+
+> - Android WebView: `"[16384, 16384]"`
+> - Edge2 WebView: `"[32767, 32767]"`
+> - iOS WebView: `"[16384, 16384]"`
+
+### `webgl_renderer`
+
+```javascript
+const canvas = document.createElement("canvas");
+const ctx =
+  canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+ctx.getParameter(ctx.RENDERER);
+```
+
+### `webgl_shading_language_version`
+
+```javascript
+const canvas = document.createElement("canvas");
+const ctx =
+  canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+ctx.getParameter(ctx.SHADING_LANGUAGE_VERSION);
+```
+
+### `webgl_unmasked_renderer`
+
+```javascript
+const canvas = document.createElement("canvas");
+const ctx =
+  canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+const ext = ctx.getExtension("WEBGL_debug_renderer_info");
+ctx.getParameter(ext["UNMASKED_RENDERER_WEBGL"]);
+```
+
+### `webgl_unmasked_vendor`
+
+```javascript
+const canvas = document.createElement("canvas");
+const ctx =
+  canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+const ext = ctx.getExtension("WEBGL_debug_renderer_info");
+ctx.getParameter(ext["UNMASKED_VENDOR_WEBGL"]);
+```
+
+### `webgl_vendor`
+
+```javascript
+const canvas = document.createElement("canvas");
+const ctx =
+  canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+ctx.getParameter(ctx.VENDOR);
+```
+
+### `webgl_version`
+
+```javascript
+const canvas = document.createElement("canvas");
+const ctx =
+  canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+ctx.getParameter(ctx.VERSION);
+```
+
+### `webgl_vsf_params`
+
+> - Android WebView: `"23,127,127,23,127,127,23,127,127"`
+> - Edge2 WebView: `"23,127,127,23,127,127,23,127,127"`
+> - iOS WebView: `"23,127,127,23,127,127,23,127,127"`
+
+### `webgl_vsi_params`
+
+> - Android WebView: `"0,31,30,0,31,30,0,31,30"`
+> - Edge2 WebView: `"0,31,30,0,31,30,0,31,30"`
+> - iOS WebView: `"0,31,30,0,31,30,0,31,30"`
 
 ## `fe`
 
@@ -441,10 +563,10 @@ const screen_orientation = screen && screen.orientation && screen.orientation.ty
 const DNT = navigator.doNotTrack
   ? navigator.doNotTrack
   : navigator.msDoNotTrack
-    ? navigator.msDoNotTrack
-    : window.doNotTrack
-      ? window.doNotTrack
-      : "unknown"
+  ? navigator.msDoNotTrack
+  : window.doNotTrack
+  ? window.doNotTrack
+  : "unknown";
 ```
 
 Value can vary, depending on the browser specification and user settings.
@@ -453,11 +575,12 @@ Most of the time, this setting will be set to `unknown` if running inside a WebV
 ### `L` (language)
 
 ```javascript
-const L = navigator.language
-  || navigator.userLanguage
-  || navigator.browserLanguage
-  || navigator.systemLanguage
-  || "";
+const L =
+  navigator.language ||
+  navigator.userLanguage ||
+  navigator.browserLanguage ||
+  navigator.systemLanguage ||
+  "";
 ```
 
 ### `D` (depth)
@@ -475,9 +598,10 @@ const PR = window.devicePixelRatio || "";
 ### `S` (screen)
 
 ```javascript
-const S = screen.height > screen.width
-  ? [screen.height, screen.width]
-  : [screen.width, screen.height];
+const S =
+  screen.height > screen.width
+    ? [screen.height, screen.width]
+    : [screen.width, screen.height];
 ```
 
 ### `AS` (available screen)
@@ -490,7 +614,6 @@ const AS = (() => {
       : [screen.availWidth, screen.availHeight];
   }
 })();
-
 ```
 
 ### `TO` (timezone offset)
@@ -505,8 +628,7 @@ const TO = new Date().getTimezoneOffset();
 const SS = (() => {
   try {
     return !!window.sessionStorage;
-  }
-  catch {
+  } catch {
     return true;
   }
 })();
@@ -518,8 +640,7 @@ const SS = (() => {
 const LS = (() => {
   try {
     return !!window.localStorage;
-  }
-  catch {
+  } catch {
     return true;
   }
 })();
@@ -531,8 +652,7 @@ const LS = (() => {
 const IDB = (() => {
   try {
     return !!window.indexedDB;
-  }
-  catch {
+  } catch {
     return true;
   }
 })();
@@ -587,9 +707,7 @@ const CFP = (() => {
 
       values.push(
         "canvas winding:".concat(
-          false === ctx.isPointInPath(5, 5, "evenodd")
-            ? "yes"
-            : "no"
+          false === ctx.isPointInPath(5, 5, "evenodd") ? "yes" : "no"
         )
       );
 
@@ -634,11 +752,14 @@ const CFP = (() => {
       values.push("canvas fp:".concat(canvas.toDataURL()));
     }
 
-    return values.join("~").split("").reduce((acc, curr) =>
-      (acc = (acc << 5) - acc + curr.charCodeAt(0)) & acc, 0
-    );
-  }
-  catch {
+    return values
+      .join("~")
+      .split("")
+      .reduce(
+        (acc, curr) => (acc = (acc << 5) - acc + curr.charCodeAt(0)) & acc,
+        0
+      );
+  } catch {
     return false;
   }
 })();
@@ -691,9 +812,7 @@ const FR = (() => {
 ### `H`
 
 ```javascript
-const H = navigator.hardwareConcurrency
-  ? navigator.hardwareConcurrency
-  : "";
+const H = navigator.hardwareConcurrency ? navigator.hardwareConcurrency : "";
 ```
 
 ### `SWF`
