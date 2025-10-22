@@ -16,7 +16,7 @@
     "typescript": "~5.8.3",
     "unocss": "66.1.0-beta.11",
     "unocss-catppuccin": "^2.0.1",
-    "vite": "^6.2.7",
+    "vite": "^6.4.1",
     "vite-plugin-solid": "^2.11.6"
   },
   "pnpm": {
