@@ -46,6 +46,29 @@ import WebglVendorDemo from "../components/demo/enhanced_fp/webgl_vendor";
 import WebglVersionDemo from "../components/demo/enhanced_fp/webgl_version";
 import WebglVsfParamsDemo from "../components/demo/enhanced_fp/webgl_vsf_params";
 import WebglVsiParamsDemo from "../components/demo/enhanced_fp/webgl_vsi_params";
+import AsDemo from "../components/demo/fe/as";
+import BDemo from "../components/demo/fe/b";
+import CfpDemo from "../components/demo/fe/cfp";
+import CpucDemo from "../components/demo/fe/cpuc";
+import DDemo from "../components/demo/fe/d";
+import DntDemo from "../components/demo/fe/dnt";
+import FbDemo from "../components/demo/fe/fb";
+import FosDemo from "../components/demo/fe/fos";
+import FrDemo from "../components/demo/fe/fr";
+import HDemo from "../components/demo/fe/h";
+import IdbDemo from "../components/demo/fe/idb";
+import JsfDemo from "../components/demo/fe/jsf";
+import LDemo from "../components/demo/fe/l";
+import LsDemo from "../components/demo/fe/ls";
+import OdbDemo from "../components/demo/fe/odb";
+import PDemo from "../components/demo/fe/p";
+import PkDemo from "../components/demo/fe/pk";
+import PrDemo from "../components/demo/fe/pr";
+import SDemo from "../components/demo/fe/s";
+import SsDemo from "../components/demo/fe/ss";
+import SwfDemo from "../components/demo/fe/swf";
+import TDemo from "../components/demo/fe/t";
+import ToDemo from "../components/demo/fe/to";
 
 const DocumentationView: Component = () => {
   return (
@@ -166,6 +189,56 @@ const removeQueryParams = ${removeQueryParams.toString()};
         <WebglVsfParamsDemo />
         <p>webgl_vsi_params</p>
         <WebglVsiParamsDemo />
+      </section>
+      <section>
+        <h2 class="text-2xl font-bold">fe</h2>
+
+        <p>AS</p>
+        <AsDemo />
+        <p>B</p>
+        <BDemo />
+        <p>CFP</p>
+        <CfpDemo />
+        <p>CPUC</p>
+        <CpucDemo />
+        <p>D</p>
+        <DDemo />
+        <p>DNT</p>
+        <DntDemo />
+        <p>FB</p>
+        <FbDemo />
+        <p>fos</p>
+        <FosDemo />
+        <p>fr</p>
+        <FrDemo />
+        <p>H</p>
+        <HDemo />
+        <p>IDB</p>
+        <IdbDemo />
+        <p>JSF</p>
+        <JsfDemo />
+        <p>L</p>
+        <LDemo />
+        <p>LS</p>
+        <LsDemo />
+        <p>ODB</p>
+        <OdbDemo />
+        <p>P</p>
+        <PDemo />
+        <p>PK</p>
+        <PkDemo />
+        <p>PR</p>
+        <PrDemo />
+        <p>S</p>
+        <SDemo />
+        <p>SS</p>
+        <SsDemo />
+        <p>SWF</p>
+        <SwfDemo />
+        <p>T</p>
+        <TDemo />
+        <p>TO</p>
+        <ToDemo />
       </section>
     </div>
   );
