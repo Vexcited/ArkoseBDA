@@ -8,19 +8,23 @@ const objectToString = (obj: object): string => {
 const sortObjectKeys = <T extends unknown>(obj: T): T => {
   if (Array.isArray(obj)) {
     return obj.map(sortObjectKeys) as T;
-  }
-  else if (typeof obj === "object" && obj !== null) {
-    const sortedEntries = Object.entries(obj).sort(([keyA], [keyB]) => keyA.localeCompare(keyB));
-    return Object.fromEntries(sortedEntries.map(([key, value]) => [key, sortObjectKeys(value)])) as T
+  } else if (typeof obj === "object" && obj !== null) {
+    const sortedEntries = Object.entries(obj).sort(([keyA], [keyB]) =>
+      keyA.localeCompare(keyB)
+    );
+    return Object.fromEntries(
+      sortedEntries.map(([key, value]) => [key, sortObjectKeys(value)])
+    ) as T;
   }
 
   return obj;
-}
+};
 
 const MainView: Component = () => {
   const [code, setCode] = createSignal("");
   const [output, setOutput] = createSignal("");
-  const [onlyShowEnhancedFingerprint, setOnlyShowEnhancedFingerprint] = createSignal(false);
+  const [onlyShowEnhancedFingerprint, setOnlyShowEnhancedFingerprint] =
+    createSignal(false);
   const [showAsKeyValuePairs, setShowAsKeyValuePairs] = createSignal(true);
   const [sortKeyValuePairs, setSortKeyValuePairs] = createSignal(true);
 
@@ -44,36 +48,49 @@ const MainView: Component = () => {
         }
 
         setOutput(objectToString(properties));
-      }
-      else {
+      } else {
         setOutput(objectToString(entries));
       }
-    }
-    catch (error) {
+    } catch (error) {
       if (error instanceof ExpiredBDAError) {
         setOutput(error.message);
-      }
-      else {
-        setOutput("Invalid input, please input a raw HTTP message of only the form containing the bda and userbrowser fields.");
+      } else {
+        setOutput(
+          "Invalid input, please input a raw HTTP message of only the form containing the bda and userbrowser fields."
+        );
       }
     }
-  })
+  });
 
   return (
     <div>
       <h1>Arkose BDA</h1>
       <p>A simplified reader for Arkose's BDA.</p>
       <label>
-        <input type="checkbox" checked={onlyShowEnhancedFingerprint()} onChange={(e) => setOnlyShowEnhancedFingerprint(e.currentTarget.checked)} />
+        <input
+          type="checkbox"
+          checked={onlyShowEnhancedFingerprint()}
+          onChange={(e) =>
+            setOnlyShowEnhancedFingerprint(e.currentTarget.checked)
+          }
+        />
         Only show enhanced fingerprint
       </label>
       <label>
-        <input type="checkbox" checked={showAsKeyValuePairs()} onChange={(e) => setShowAsKeyValuePairs(e.currentTarget.checked)} />
+        <input
+          type="checkbox"
+          checked={showAsKeyValuePairs()}
+          onChange={(e) => setShowAsKeyValuePairs(e.currentTarget.checked)}
+        />
         Show as key-value pairs
       </label>
       <Show when={showAsKeyValuePairs()}>
         <label>
-          <input type="checkbox" checked={sortKeyValuePairs()} onChange={(e) => setSortKeyValuePairs(e.currentTarget.checked)} />
+          <input
+            type="checkbox"
+            checked={sortKeyValuePairs()}
+            onChange={(e) => setSortKeyValuePairs(e.currentTarget.checked)}
+          />
           Sort key-value pairs
         </label>
       </Show>
@@ -90,7 +107,7 @@ const MainView: Component = () => {
         value={output()}
       ></textarea>
     </div>
-  )
+  );
 };
 
 export default MainView;
