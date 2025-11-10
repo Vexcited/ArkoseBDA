@@ -10,8 +10,8 @@ const Md5HexDemo = () => {
     <div>
       <Code
         snippet={`
-import { md5 } from "@noble/hashes/legacy";
-import { bytesToHex } from "@noble/hashes/utils";
+import { md5 } from "@noble/hashes/legacy.js";
+import { bytesToHex, utf8ToBytes } from "@noble/hashes/utils.js";
 
 /**
  * Converts a UTF-8 string into an MD5 HEX.
@@ -19,7 +19,7 @@ import { bytesToHex } from "@noble/hashes/utils";
  * @example
  * md5hex("Hello, World~!"); // "0c9c5d5ad3485050dd733e5c50521f89"
  */
-export const md5hex = (input: string) => bytesToHex(md5(input));
+export const md5hex = (input: string) => bytesToHex(md5(utf8ToBytes(input)));
       `.trim()}
       />
 

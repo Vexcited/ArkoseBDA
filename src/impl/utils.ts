@@ -1,5 +1,5 @@
-import { md5 } from "@noble/hashes/legacy";
-import { bytesToHex } from "@noble/hashes/utils";
+import { md5 } from "@noble/hashes/legacy.js";
+import { bytesToHex, utf8ToBytes } from "@noble/hashes/utils.js";
 
 /**
  * Converts a UTF-8 string into an MD5 HEX.
@@ -7,7 +7,7 @@ import { bytesToHex } from "@noble/hashes/utils";
  * @example
  * md5hex("helloworld"); // "fc5e038d38a57032085441e7fe7010b0"
  */
-export const md5hex = (input: string) => bytesToHex(md5(input));
+export const md5hex = (input: string) => bytesToHex(md5(utf8ToBytes(input)));
 
 /**
  * Removes query parameters from a string, typically a URL.

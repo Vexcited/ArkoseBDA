@@ -6,21 +6,21 @@
     "build": "tsc -b && vite build"
   },
   "dependencies": {
-    "@noble/ciphers": "^1.2.1",
-    "@noble/hashes": "^1.7.2",
-    "@scure/base": "^1.2.4",
+    "@noble/ciphers": "^2.0.1",
+    "@noble/hashes": "^2.0.1",
+    "@scure/base": "^2.0.0",
     "@solidjs/router": "^0.15.3",
-    "@unocss/reset": "66.1.0-beta.11",
+    "@unocss/reset": "66.5.5",
     "shiki": "^3.15.0",
-    "solid-js": "^1.9.5"
+    "solid-js": "^1.9.10"
   },
   "devDependencies": {
-    "typescript": "~5.8.3",
-    "unocss": "66.1.0-beta.11",
+    "typescript": "~5.9.3",
+    "unocss": "66.5.5",
     "unocss-catppuccin": "^2.0.1",
     "user-agent-data-types": "^0.4.2",
-    "vite": "^6.4.1",
-    "vite-plugin-solid": "^2.11.6"
+    "vite": "^7.2.2",
+    "vite-plugin-solid": "^2.11.10"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
