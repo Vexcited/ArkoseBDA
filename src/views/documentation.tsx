@@ -69,6 +69,8 @@ import SsDemo from "../components/demo/fe/ss";
 import SwfDemo from "../components/demo/fe/swf";
 import TDemo from "../components/demo/fe/t";
 import ToDemo from "../components/demo/fe/to";
+import NDemo from "../components/demo/n";
+import JsbdDemo from "../components/demo/jsbd";
 
 const DocumentationView: Component = () => {
   return (
@@ -97,6 +99,10 @@ const numberOrNull = ${numberOrNull.toString()};
 const removeQueryParams = ${removeQueryParams.toString()};
         `.trim()}
         />
+      </section>
+      <section>
+        <h2>api_type</h2>
+        <p>This value is always going to be "js"</p>
       </section>
       <section>
         <h2 class="text-2xl font-bold">enhanced_fp</h2>
@@ -149,7 +155,7 @@ const removeQueryParams = ${removeQueryParams.toString()};
         <MathFingerprintDemo />
         <p>supported_math_functions</p>
         <SupportedMathFunctionsDemo />
-        <p>screen_orientation</p>
+        <p>3f76dd27 (screen_orientation)</p>
         <ScreenOrientationDemo />
         <p>webgl_aliased_line_width_range</p>
         <WebglAliasedLineWidthRangeDemo />
@@ -239,6 +245,14 @@ const removeQueryParams = ${removeQueryParams.toString()};
         <TDemo />
         <p>TO</p>
         <ToDemo />
+      </section>
+      <section>
+        <h2>jsbd</h2>
+        <JsbdDemo />
+      </section>
+      <section>
+        <h2>n</h2>
+        <NDemo />
       </section>
     </div>
   );
