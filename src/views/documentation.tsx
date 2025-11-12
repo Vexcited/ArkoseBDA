@@ -70,6 +70,7 @@ import TDemo from "../components/demo/fe/t";
 import ToDemo from "../components/demo/fe/to";
 import NDemo from "../components/demo/n";
 import JsbdDemo from "../components/demo/jsbd";
+import U_f9bf2dbDemo from "../components/demo/enhanced_fp/u_f9bf2db";
 
 const DocumentationView: Component = () => {
   return (
@@ -154,6 +155,8 @@ export const removeQueryParams = (input: string) => {
         <NavigatorPdfViewerEnabledDemo />
         <p>navigator_languages</p>
         <NavigatorLanguagesDemo />
+        <p>f9bf2db</p>
+        <U_f9bf2dbDemo />
         <p>window_inner_width</p>
         <WindowInnerWidthDemo />
         <p>window_inner_height</p>
