@@ -166,7 +166,7 @@ export const removeQueryParams = (input: string) => {
         <BrowserDectectionFirefoxDemo />
         <p>browser_detection_brave</p>
         <BrowserDetectionBraveDemo />
-        <p>browser_api_checks</p>
+        <p>f58835f (previously browser_api_checks)</p>
         <BrowserApiChecksDemo />
         <p>browser_object_checks</p>
         <BrowserObjectChecksDemo />

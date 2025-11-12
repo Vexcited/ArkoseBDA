@@ -1,3 +1,4 @@
+import { md5hex } from "../../../impl/utils";
 import Code from "../../Code";
 import Output from "../../Output";
 
@@ -6,38 +7,59 @@ const BrowserApiChecksDemo = () => {
     <div>
       <Code
         snippet={`
-try {
-  return [
-    "permission_status: ".concat(
-      !!window.PermissionStatus &&
-        Object.prototype.hasOwnProperty.call(
-          window.PermissionStatus.prototype,
-          "name"
+() => {
+  try {
+    const apis = [
+      "permission_status: ".concat(
+        !!window.PermissionStatus &&
+          Object.prototype.hasOwnProperty.call(
+            window.PermissionStatus.prototype,
+            "name"
+          )
+      ),
+      "eye_dropper: ".concat(!!window.EyeDropper),
+      "audio_data: ".concat(!!window.AudioData),
+      "writable_stream: ".concat(
+        !!window.WritableStreamDefaultController
+      ),
+      "css_style_rule: ".concat(
+        !!window.CSSCounterStyleRule
+      ),
+      "navigator_ua: ".concat(!!window.NavigatorUAData),
+      "barcode_detector: ".concat(
+        !!window.BarcodeDetector
+      ),
+      "display_names: ".concat(
+        !(!window.Intl || !window.Intl.DisplayNames)
+      ),
+      "contacts_manager: "["concat"](
+        !!(
+          navigator &&
+          navigator.contacts &&
+          navigator.ContactsManager
         )
-    ),
-    "eye_dropper: ".concat(!!window.EyeDropper),
-    "audio_data: ".concat(!!window.AudioData),
-    "writable_stream: ".concat(!!window.WritableStreamDefaultController),
-    "css_style_rule: ".concat(!!window.CSSCounterStyleRule),
-    "navigator_ua: ".concat(!!window.NavigatorUAData),
-    "barcode_detector: ".concat(!!window.BarcodeDetector),
-    "display_names: ".concat(!(!window.Intl || !window.Intl.DisplayNames)),
-    "contacts_manager: ".concat(
-      !!(navigator && navigator.contacts && navigator.ContactsManager)
-    ),
-    "svg_discard_element: ".concat(!!window.SVGDiscardElement),
-    "usb: ".concat(navigator.usb ? "defined" : "NA"),
-    "media_device: ".concat(navigator.mediaDevices ? "defined" : "NA"),
-    "playback_quality: ".concat(
-      !!(
-        window.HTMLVideoElement &&
-        window.HTMLVideoElement.prototype &&
-        window.HTMLVideoElement.prototype.getVideoPlaybackQuality
+      ),
+      "svg_discard_element: ".concat(
+        !!window.SVGDiscardElement
+      ),
+      "usb: ".concat(navigator.usb ? "defined" : "NA"),
+      "media_device: ".concat(
+        navigator.mediaDevices ? "defined" : "NA"
+      ),
+      "playback_quality: ".concat(
+        !!(
+          window.HTMLVideoElement &&
+          window.HTMLVideoElement.prototype &&
+          window.HTMLVideoElement.prototype.getVideoPlaybackQuality
+        )
       )
-    ),
-  ];
-} catch {
-  return null;
+    ];
+
+    return md5hex(JSON.stringify(apis));
+  }
+  catch {
+    return null;
+  }
 }
         `.trim()}
       />
@@ -45,7 +67,7 @@ try {
       <Output
         generator={() => {
           try {
-            return [
+            const apis = [
               "permission_status: ".concat(
                 // @ts-expect-error
                 !!window.PermissionStatus &&
@@ -72,7 +94,7 @@ try {
                 // @ts-expect-error
                 !(!window.Intl || !window.Intl.DisplayNames)
               ),
-              "contacts_manager: ".concat(
+              "contacts_manager: "["concat"](
                 // @ts-expect-error
                 !!(navigator && navigator.contacts && navigator.ContactsManager)
               ),
@@ -92,6 +114,7 @@ try {
                 )
               ),
             ];
+            return md5hex(JSON.stringify(apis));
           } catch {
             return null;
           }
