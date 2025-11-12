@@ -1,17 +1,26 @@
-import { Component, createEffect, createSignal, on } from "solid-js";
+import { Component, createEffect, createSignal, on, Show } from "solid-js";
 
-const Output: Component<{ generator: () => any }> = (props) => {
+const Output: Component<{ generator: () => any; noRefresh?: boolean }> = (
+  props
+) => {
   const [value, setValue] = createSignal();
 
   createEffect(on(() => props.generator(), setValue));
   const refresh = () => setValue(props.generator());
 
   return (
-    <div>
-      <p class="font-mono">{JSON.stringify(value())}</p>
-      <button type="button" onClick={refresh}>
-        refresh
-      </button>
+    <div class="flex gap-4">
+      <textarea
+        class="font-mono bg-#24273a text-white rounded px-4 py-2 field-sizing-content outline-none resize-none"
+        readonly
+      >
+        {JSON.stringify(value())}
+      </textarea>
+      <Show when={!props.noRefresh}>
+        <button type="button" onClick={refresh}>
+          refresh
+        </button>
+      </Show>
     </div>
   );
 };

@@ -1,5 +1,4 @@
 import { Component } from "solid-js";
-import { numberOrNull, removeQueryParams } from "../impl/utils";
 import Code from "../components/Code";
 import Md5HexDemo from "../components/demo/utils/md5hex";
 import UserAgentDataBrandsDemo from "../components/demo/enhanced_fp/user_agent_data_brands";
@@ -74,13 +73,24 @@ import JsbdDemo from "../components/demo/jsbd";
 
 const DocumentationView: Component = () => {
   return (
-    <div>
-      This documentation concerns v2.17.2 of their enforcement.js file.
+    <main class="max-w-1100px w-full mx-auto my-12 px-6">
+      <h1 class="text-4xl font-black uppercase">Everything about BDA</h1>
+      <p class="py-6">
+        A deep focus on their{" "}
+        <code class="bg-#24273a text-white px-2 py-.5 rounded">
+          enforcement.js
+        </code>{" "}
+        script running in browser during captcha initialization.
+        <br />
+        Currently in version{" "}
+        <code class="bg-#24273a text-white px-2 py-.5 rounded">2.17.2</code>
+      </p>
       <section>
-        <h2>Utilities</h2>
+        <h2 class="text-2xl font-medium">
+          Some utilities we'll use (written in TS)
+        </h2>
         <p>
-          In this documentation, we'll be using a lot these functions. They're
-          either reimplementation of Arkose's code or a direct adaptation.
+          They're either reimplementation of Arkose's code or direct adaptation.
         </p>
 
         <p>md5hex</p>
@@ -89,14 +99,31 @@ const DocumentationView: Component = () => {
         <p>numberOrNull</p>
         <Code
           snippet={`
-const numberOrNull = ${numberOrNull.toString()};
+/**
+ * Returns a number if the input is a number, otherwise returns null.
+ *
+ * @example
+ * numberOrNull(42); // 42
+ * numberOrNull("not a number"); // null
+ */
+export const numberOrNull = (num: unknown): number | null => {
+  return typeof num === "number" ? num : null;
+};
         `.trim()}
         />
 
         <p>removeQueryParams</p>
         <Code
           snippet={`
-const removeQueryParams = ${removeQueryParams.toString()};
+/**
+ * Removes query parameters from a string, typically a URL.
+ *
+ * @example
+ * removeQueryParams("https://example.com/path?query=param"); // "https://example.com/path"
+ */
+export const removeQueryParams = (input: string) => {
+  return input || typeof input === "string" ? input.split("?")[0] : null;
+};
         `.trim()}
         />
       </section>
@@ -105,7 +132,7 @@ const removeQueryParams = ${removeQueryParams.toString()};
         <p>This value is always going to be "js"</p>
       </section>
       <section>
-        <h2 class="text-2xl font-bold">enhanced_fp</h2>
+        <h2 class="text-2xl font-bold font-mono">enhanced_fp</h2>
 
         <p>user_agent_data_brands</p>
         <UserAgentDataBrandsDemo />
@@ -155,7 +182,7 @@ const removeQueryParams = ${removeQueryParams.toString()};
         <MathFingerprintDemo />
         <p>supported_math_functions</p>
         <SupportedMathFunctionsDemo />
-        <p>3f76dd27 (screen_orientation)</p>
+        <p>3f76dd27 (previously, screen_orientation)</p>
         <ScreenOrientationDemo />
         <p>webgl_aliased_line_width_range</p>
         <WebglAliasedLineWidthRangeDemo />
@@ -254,7 +281,7 @@ const removeQueryParams = ${removeQueryParams.toString()};
         <h2>n</h2>
         <NDemo />
       </section>
-    </div>
+    </main>
   );
 };
 

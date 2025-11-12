@@ -23,13 +23,17 @@ export const md5hex = (input: string) => bytesToHex(md5(utf8ToBytes(input)));
       `.trim()}
       />
 
-      <input
-        type="text"
-        value={input()}
-        onInput={(event) => setInput(event.currentTarget.value)}
-      />
+      <div class="flex border rounded my-2 px-4 py-2 gap-2">
+        <p>&gt;</p>
+        <input
+          type="text"
+          value={input()}
+          onInput={(event) => setInput(event.currentTarget.value)}
+          class="outline-none w-full"
+        />
+      </div>
 
-      <Output generator={() => md5hex(input())} />
+      <Output generator={() => md5hex(input())} noRefresh />
     </div>
   );
 };

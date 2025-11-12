@@ -1,4 +1,10 @@
-import { type Component, createEffect, on, onCleanup } from "solid-js";
+import {
+  type Component,
+  createEffect,
+  createSignal,
+  on,
+  onCleanup,
+} from "solid-js";
 import { createHighlighter } from "shiki";
 
 const highlighter = await createHighlighter({
@@ -31,7 +37,25 @@ const Code: Component<{
     )
   );
 
-  return <div ref={ref} />;
+  const [copied, setCopied] = createSignal(false);
+  const onCopy = async () => {
+    await navigator.clipboard.writeText(props.snippet);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 750);
+  };
+
+  return (
+    <div class="relative">
+      <button
+        type="button"
+        class="absolute top-2 right-3 text-white"
+        onClick={onCopy}
+      >
+        {copied() ? "copied" : "copy"}
+      </button>
+      <div class="py-3 px-4 rounded bg-#24273a overflow-x-auto" ref={ref} />
+    </div>
+  );
 };
 
 export default Code;
