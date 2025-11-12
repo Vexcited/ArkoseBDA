@@ -71,6 +71,7 @@ import ToDemo from "../components/demo/fe/to";
 import NDemo from "../components/demo/n";
 import JsbdDemo from "../components/demo/jsbd";
 import U_f9bf2dbDemo from "../components/demo/enhanced_fp/u_f9bf2db";
+import U_3ea7194Demo from "../components/demo/enhanced_fp/u_3ea7194";
 
 const DocumentationView: Component = () => {
   return (
@@ -185,6 +186,8 @@ export const removeQueryParams = (input: string) => {
         <MathFingerprintDemo />
         <p>supported_math_functions</p>
         <SupportedMathFunctionsDemo />
+        <p>3ea7194</p>
+        <U_3ea7194Demo />
         <p>3f76dd27 (previously, screen_orientation)</p>
         <ScreenOrientationDemo />
         <p>webgl_aliased_line_width_range</p>
