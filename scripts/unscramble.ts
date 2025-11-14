@@ -2,9 +2,10 @@
 //! all the strings so it gets finally a bit readable.
 
 import {
-  BinaryExpression,
+  AssignmentExpression,
   ForStatement,
   FunctionExpression,
+  Identifier,
   Node,
   SimpleCallExpression,
 } from "estree";
@@ -52,15 +53,16 @@ traverse(ast, {
       /*
         We're looking for function calls that looks like the following.
 
-        O(100);
-
-        and of course,
+        O(100);               // the easy one...
 
         var S = 50;
-        O(50);
+        O(50);                // the medium one
 
-        The number from the first argument will be our index for the
-        constants giver.
+        var jt;
+        ((jt = 1187), O(jt))  // very hard one!
+
+        Should be recursive, of course.
+        This will give us the index of the string to look for in constants.
       */
 
       const path = ret.call;
@@ -71,16 +73,48 @@ traverse(ast, {
 
       const arg = args[0];
 
-      if (is.identifier(arg)) {
-        const decl = path.scope.getBinding(arg.name);
-        if (!decl || !is.variableDeclarator(decl.path.node)) return;
-
-        const init = decl.path.node.init;
-        if (!is.literal(init) || typeof init.value !== "number") return;
-
-        ret.index = init.value;
-      } else if (is.literal(arg) && typeof arg.value === "number") {
+      if (is.literal(arg) && typeof arg.value === "number") {
         ret.index = arg.value;
+      } else if (is.identifier(arg)) {
+        const recursive = (bind: Binding<BindingKind>) => {
+          const node = bind.path.node;
+          if (!is.variableDeclarator(node) || !is.identifier(node.id)) return;
+
+          if (node.init === null) {
+            const assign = bind.constantViolations.find((v) =>
+              is.assignmentExpression(v.parent)
+            );
+
+            if (!assign || !assign.parent) return;
+            if (!is.assignmentExpression(assign.parent)) return;
+
+            if (is.identifier(assign.parent.right)) {
+              if (!assign.scope) return;
+
+              const bind = assign.scope.getBinding(assign.parent.right.name);
+              if (!bind) return;
+
+              return recursive(bind);
+            } else if (
+              is.literal(assign.parent.right) &&
+              typeof assign.parent.right.value === "number"
+            ) {
+              return assign.parent.right.value;
+            }
+          } else if (
+            is.literal(node.init) &&
+            typeof node.init.value === "number"
+          ) {
+            return node.init.value;
+          }
+        };
+
+        const decl = path.scope.getBinding(arg.name);
+        if (!decl) return;
+
+        const index = recursive(decl);
+        if (index === void 0) return;
+        ret.index = index;
       } else return;
     }
 
@@ -110,7 +144,6 @@ traverse(ast, {
 
       const path = ret.call;
       if (!path.node || !path.scope) return;
-
       if (!is.identifier(path.node.callee)) return;
 
       const fn = path.scope.getBinding(path.node.callee.name);
@@ -122,15 +155,30 @@ traverse(ast, {
       } else if (is.variableDeclarator(fn.path.node)) {
         const recursive = (bind: Binding<BindingKind>) => {
           const node = bind.path.node;
+          if (!is.variableDeclarator(node) || !is.identifier(node.id)) return;
 
-          if (
-            !is.variableDeclarator(node) ||
-            !is.identifier(node.id) ||
-            !is.identifier(node.init)
-          )
-            return;
+          let init: Identifier | undefined;
 
-          const ref = bind.scope.getBinding(node.init.name);
+          if (node.init === null) {
+            const assign = bind.constantViolations.find((v) =>
+              is.assignmentExpression(v.parent)
+            );
+
+            if (!assign || !assign.parent) return;
+            if (
+              !is.assignmentExpression(assign.parent) ||
+              !is.identifier(assign.parent.right)
+            )
+              return;
+
+            init = assign.parent.right;
+          } else if (is.identifier(node.init)) {
+            init = node.init;
+          }
+
+          if (!init) return;
+
+          const ref = bind.scope.getBinding(init.name);
           if (!ref) return;
 
           if (is.functionDeclaration(ref.path.node)) {
@@ -226,17 +274,33 @@ traverse(ast, {
           }),
           j(t, e)
         );
+
+        annnndddd sometimes it can also look like this...
+
+        return (h = function (t, e) {
+          return r[(t -= 416)];
+        })(t, e);
       */
 
       const path = ret.offset_fn;
       if (!is.functionDeclaration(path.node) || !path.scope) return;
 
       let rtn = path.node.body.body[1];
-      if (!is.returnStatement(rtn) || !is.sequenceExpression(rtn.argument))
-        return;
+      if (!is.returnStatement(rtn)) return;
 
-      const assign_expression = rtn.argument.expressions[0];
-      if (!is.assignmentExpression(assign_expression)) return;
+      let assign_expression: AssignmentExpression | undefined;
+
+      if (is.sequenceExpression(rtn.argument)) {
+        const expr = rtn.argument.expressions[0];
+        if (!is.assignmentExpression(expr)) return;
+        assign_expression = expr;
+      } else if (is.callExpression(rtn.argument)) {
+        const expr = rtn.argument.callee;
+        if (!is.assignmentExpression(expr)) return;
+        assign_expression = expr;
+      }
+
+      if (!assign_expression) return;
 
       const fn_expression = assign_expression.right;
       if (!is.functionExpression(fn_expression)) return;
@@ -269,12 +333,19 @@ traverse(ast, {
         Where `Be` is the function containing the constants array.
         They only take the first item and push it to the end if the
         condition is truthy.
+
+        Okay, but see the `!` at the beginning?
+        Sometimes it is not there...
       */
 
       const found = ret.constants_fn.references.find((ref) => {
-        if (!is.callExpression(ref.parentPath)) return false; // used as first argument!
-        if (!is.unaryExpression(ref.parentPath.parentPath)) return false;
-        if (ref.parentPath.parentPath.node?.operator !== "!") return false;
+        if (!is.callExpression(ref.parentPath)) return false;
+
+        // Add the extra check if find an unary expression on the parent.
+        if (is.unaryExpression(ref.parentPath.parentPath)) {
+          if (ref.parentPath.parentPath.node?.operator !== "!") return false;
+        }
+
         return true;
       });
 
@@ -385,46 +456,22 @@ traverse(ast, {
   },
 });
 
-join_strings: {
-  /*
-    After everything got replaced, we have code that could look like this.
-
-    > Object["getOwnProper" + "tyDesc" + "riptor"];
-
-    For the sake of readability, it would be better if it was...
-
-    > Object["getOwnPropertyDescriptor"];
-
-    So let's make it happen.
-  */
-
-  traverse(ast, {
-    $: { scope: true },
-    BinaryExpression(path) {
-      if (!path.node || !path.scope) return;
-
-      const recursive = ({
-        right,
-        left,
-      }: BinaryExpression): string | undefined => {
-        if (!is.literal(right) || typeof right.value !== "string") return;
-
-        if (is.literal(left) && typeof left.value === "string") {
-          return left.value + right.value;
-        } else if (is.binaryExpression(left)) {
-          return recursive(left) + right.value;
-        } else return;
-      };
-
-      const value = recursive(path.node);
-      if (value === void 0) return;
-
-      path.replaceWith({
-        type: "Literal",
-        value,
-      });
-    },
-  });
-}
-
+// Write a first time the file with syntax mangle.
 await Bun.write(destination, generate(ast));
+
+// Demangle the syntax by building the script with itself
+// so Bun will automatically simplify the syntax and strings.
+const {
+  outputs: [minified],
+} = await Bun.build({
+  entrypoints: [destination],
+  minify: {
+    syntax: true,
+    keepNames: true,
+    whitespace: false,
+    identifiers: true,
+  },
+});
+
+// Overwrite the file.
+await Bun.write(destination, await minified.text());
